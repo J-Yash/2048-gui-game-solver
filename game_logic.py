@@ -172,22 +172,3 @@ class GameLogic:
         self.__add_piece()
 
         return copy.deepcopy(self)
-
-
-game1 = initialize_game()
-
-game1.print_game()
-game1.make_move("D")
-game1.print_game()
-game1.make_move("D")
-game1.print_game()
-game1.make_move("D")
-game1.print_game()
-game1.make_move("L")
-game1.print_game()
-game1.make_move("D")
-game1.print_game()
-game1.make_move("L")
-game1.print_game()
-game1.make_move("D")
-game1.print_game()
