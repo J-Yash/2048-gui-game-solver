@@ -135,7 +135,7 @@ class GameGrid(Frame):
                         text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(
                         text="Win!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
-                time.sleep(0.2)
+                #time.sleep(0.2)
                 return True
                 #if self.matrix.is_goal() is True:
                 #    self.grid_cells[1][1].configure(

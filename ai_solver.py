@@ -87,17 +87,25 @@ def evaluation_utility_value(curr_game, player_switch):
     for i in range(len(board[0])):
         for j in range(len(board[0])):
             if (i-1) >= 0:
-                util1 += abs(board[i][j] - board[i-1][j])
+                util1 -= abs(board[i][j] - board[i-1][j])
             if (j-1) >= 0:
-                util1 += abs(board[i][j] - board[i][j-1])
+                util1 -= abs(board[i][j] - board[i][j-1])
             if (i+1) < 4:
-                util1 += abs(board[i][j] - board[i+1][j])
+                util1 -= abs(board[i][j] - board[i+1][j])
             if (j+1) < 4:
-                util1 += abs(board[i][j] - board[i][j+1])
+                util1 -= abs(board[i][j] - board[i][j+1])
 
     # calculating utility for largest values tiles being on the corners
 
     util2 = 0
+    for i in range(4):
+        if (all(board[i][j] <= board[i][j+1] for j in range(3)) or all(board[i][j] >= board[i][j+1] for j in range(3))):
+            util2 += 400
+    for j in range(4):
+        if (all(board[i][j] <= board[i+1][j] for i in range(3)) or all(board[i][j] >= board[i+1][j] for i in range(3))):
+            util2 += 400
+
+    '''
     for i in range(len(board[0])-1):
         #for j in range(len(board[0])-1):
         j = 0
@@ -163,16 +171,16 @@ def evaluation_utility_value(curr_game, player_switch):
                         util2 += 20
                     else:
                         util2 -= 20
+        '''
+    util3 = 0
+    for i in range(len(board[0])):
+        for j in range(len(board[0])):
+            if board[i][j] == ' ':
+                util3 += 1
+    util3 = (16 - util3)**2
 
-        util3 = 0
-        for i in range(len(board[0])):
-            for j in range(len(board[0])):
-                if board[i][j] == ' ':
-                    util3 += 1
-        util3 *= 100
-
-            
-        utility = util3 + util2 - util1
+        
+    utility = util3 + util2 + util1
 
     return utility
 
@@ -187,7 +195,7 @@ def minimax_with_ab_pruning(current_game, depth, alpha, beta, player_switch, gam
     best_move = game_move
     
     if player_switch == 0:
-        best_val = -10000
+        best_val = -100000
         for move in possible_moves:
             next_game = current_game.make_move(move)
             val, ret_move = minimax_with_ab_pruning(next_game, depth+1, alpha, beta, 1, move, depth_limit)
@@ -202,7 +210,7 @@ def minimax_with_ab_pruning(current_game, depth, alpha, beta, player_switch, gam
         
 
     elif player_switch == 1:
-        best_val = 10000
+        best_val = 100000
         for move in possible_moves:
             next_game = current_game.make_move(move)
             val, ret_move = minimax_with_ab_pruning(next_game, depth+1, alpha, beta, 0, move, depth_limit)
@@ -226,10 +234,10 @@ def ai_next_move(game):
     #player = game.getCurrentPlayer()
     #deterministic = game.getDeterministic()
     depth = 0
-    alpha = -10000
-    beta = 10000
+    alpha = -100000
+    beta = 100000
     initial_move = None
-    depth_limit = 7
+    depth_limit = 8
 
     #print(board)
     #print(game.state())

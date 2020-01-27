@@ -199,6 +199,14 @@ class GameLogic:
             self.__game[r[0]][r[1]] = 2
             self.__new_piece_loc = r
 
+    def minimax_add_piece(self, pos):
+        if self.__game[pos[0]][pos[1]] == ' ':
+            self.__game[pos[0]][pos[1]] = 2
+            self.__new_piece_loc = pos
+            return True
+        else:
+            return False
+
         
 
     def make_move(self, move):
