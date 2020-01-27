@@ -29,6 +29,50 @@ class GameLogic:
         self.__new_piece_loc = (0, 0)
         self.__previous_game = self.__game
 
+    def __cmp__(self, other):
+        return cmp(self.state_cost(), other.state_cost())
+
+    def is_goal(self):
+        goal = False
+        for i in range(len(self.__game[0])):
+            for j in range(len(self.__game[0])):
+                if self.__game[i][j] == 2048:
+                    goal = True
+        if goal is True:
+            return True
+        else:
+            return False
+
+    def is_game_full(self):
+        board = self.get_game()
+        for i in range(len(board)):
+            for j in range(len(board)):
+                if board[i][j] == ' ':
+                    return True
+
+        for i in range(len(board)):
+            for j in range(len(board)-1):
+                if board[i][j] == board[i][j+1]:
+                    return True
+        
+        for i in range(len(board)):
+            for j in range(len(board)-1):
+                if board[j][i] == board[j+1][i]:
+                    return True
+
+
+        return False
+        
+
+    def state_cost(self):
+        sum = 0
+        curr_game = self.get_game()
+        for i in range(4):
+            for j in range(4):
+                if curr_game[i][j] != ' ':
+                    sum = sum + curr_game[i][j]
+        return sum
+
     def print_game(self):
         str_game = [['______' for _ in range(len(self.__game))] for _ in range(len(self.__game))]
 
@@ -155,18 +199,20 @@ class GameLogic:
             self.__game[r[0]][r[1]] = 2
             self.__new_piece_loc = r
 
+        
+
     def make_move(self, move):
-        if move not in ['U', 'L', 'D', 'R']:
+        if move not in ["'U'", "'L'", "'D'", "'R'"]:
             print("Error: Invalid Move!")
 
         self.__previous_game = self.__game
-        if move == 'L':
+        if move == "'L'":
             self.__left(self.__game)
-        if move == 'R':
+        if move == "'R'":
             self.__right(self.__game)
-        if move == 'D':
+        if move == "'D'":
             self.__down(self.__game)
-        if move == 'U':
+        if move == "'U'":
             self.__up(self.__game)
 
         self.__add_piece()
