@@ -28,9 +28,13 @@ class GameLogic:
         self.__game = game
         self.__new_piece_loc = (0, 0)
         self.__previous_game = self.__game
+        self.__score = 0
 
     def __cmp__(self, other):
         return cmp(self.state_cost(), other.state_cost())
+
+    def get_score(self):
+        return self.__score
 
     def is_goal(self):
         goal = False
@@ -127,6 +131,7 @@ class GameLogic:
                     mat[i][j] = mat[i][j] * 2
                     mat[i][j+1] = ' '
                     done = True
+                    self.__score = self.__score + mat[i][j]
                 #elif mat[i][j].upper() == mat[i][j+1].upper() and mat[i][j] != ' ':
                 #    mat[i][j] = chr(ord(mat[i][j]) + 1)
                 #    mat[i][j] = mat[i][j].upper() if self.__current_player > 0 else mat[i][j].lower()
@@ -210,17 +215,17 @@ class GameLogic:
         
 
     def make_move(self, move):
-        if move not in ["'U'", "'L'", "'D'", "'R'"]:
+        if move not in ["'W'", "'A'", "'S'", "'D'"]:
             print("Error: Invalid Move!")
 
         self.__previous_game = self.__game
-        if move == "'L'":
+        if move == "'A'":
             self.__left(self.__game)
-        if move == "'R'":
-            self.__right(self.__game)
         if move == "'D'":
+            self.__right(self.__game)
+        if move == "'S'":
             self.__down(self.__game)
-        if move == "'U'":
+        if move == "'W'":
             self.__up(self.__game)
 
         self.__add_piece()

@@ -48,11 +48,13 @@ class GameGrid(Frame):
         Frame.__init__(self)
 
         self.grid()
-        self.master.title('2048 AI solver : Hit ENTER to start')
-        self.master.bind("<Return>", self.start_ai_solver)
+        self.master.title('2048 AI solver : Hit SPACEBAR to start AI. For manual, use WSAD to play.')
+        #self.master.bind("<Return>", self.start_ai_solver)
+        #self.master.bind("<space>", self.start_human_game)
+        self.master.bind("<Key>", self.game_mode)
 
         # self.gamelogic = gamelogic
-        self.commands = ("'U'", "'D'", "'L'", "'R'")
+        self.commands = ("'W'", "'S'", "'A'", "'D'")
         
         self.grid_cells = []
         self.init_grid()
@@ -107,15 +109,23 @@ class GameGrid(Frame):
                         fg=c.CELL_COLOR_DICT[new_number])
         self.update_idletasks()
 
+    def game_mode(self, event):
+        if event.char == ' ':
+            self.start_ai_solver(event)
+        else:
+            self.key_down(event, "human")
+
     def start_ai_solver(self, event):
         flag = True
         while flag:
-            flag = self.key_down()
+            flag = self.key_down(event, "ai")
 
-    def key_down(self):
+    def key_down(self, event, token="human"):
         #key = repr(event.char).upper()
-
-        key = ai_solver.ai_next_move(self.matrix)
+        if token == "ai":
+            key = ai_solver.ai_next_move(self.matrix)
+        elif token == "human":
+            key = repr(event.char).upper()
         #print(key)
         #if key == c.KEY_BACK and len(self.history_matrixs) > 1:
         #    self.matrix = self.history_matrixs.pop()
@@ -124,6 +134,7 @@ class GameGrid(Frame):
         if key in self.commands:
             if self.matrix.is_game_full():
                 self.matrix = self.matrix.make_move(key) #self.commands[repr(event.char)](self.matrix)
+                print("Score: ", self.matrix.get_score())
                 #if done:
                 #self.matrix = logic.add_two(self.matrix)
                 # record last move
@@ -135,6 +146,7 @@ class GameGrid(Frame):
                         text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(
                         text="Win!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
+                    return False
                 #time.sleep(0.2)
                 return True
                 #if self.matrix.is_goal() is True:
