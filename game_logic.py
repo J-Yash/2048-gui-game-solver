@@ -64,7 +64,6 @@ class GameLogic:
                 if board[j][i] == board[j+1][i]:
                     return True
 
-
         return False
         
 
@@ -122,7 +121,6 @@ class GameLogic:
         return (new, done)
 
     def __merge(self, mat):
-        #global current_player
 
         done = False
         for i in range(len(self.__game)):
@@ -132,16 +130,9 @@ class GameLogic:
                     mat[i][j+1] = ' '
                     done = True
                     self.__score = self.__score + mat[i][j]
-                #elif mat[i][j].upper() == mat[i][j+1].upper() and mat[i][j] != ' ':
-                #    mat[i][j] = chr(ord(mat[i][j]) + 1)
-                #    mat[i][j] = mat[i][j].upper() if self.__current_player > 0 else mat[i][j].lower()
-                #    mat[i][j+1] = ' '
-                #    done = True
         return (mat, done)
 
     def __up(self, game):
-        # print("up")
-        # return matrix after shifting up
         game = self.__transpose(game)
         game, done = self.__cover_up(game)
         temp = self.__merge(game)
@@ -154,7 +145,6 @@ class GameLogic:
         return (game, done)
 
     def __down(self, game):
-        # print("down")
         game = self.__reverse(self.__transpose(game))
         game, done = self.__cover_up(game)
         temp = self.__merge(game)
@@ -167,8 +157,6 @@ class GameLogic:
         return (game, done)
 
     def __left(self, game):
-        # print("left")
-        # return matrix after shifting left
         game, done = self.__cover_up(game)
         temp = self.__merge(game)
         game = temp[0]
@@ -179,8 +167,6 @@ class GameLogic:
         return (game, done)
 
     def __right(self, game):
-        # print("right")
-        # return matrix after shifting right
         game = self.__reverse(game)
         game, done = self.__cover_up(game)
         temp = self.__merge(game)
@@ -203,16 +189,6 @@ class GameLogic:
             r = random.choice(open)
             self.__game[r[0]][r[1]] = 2
             self.__new_piece_loc = r
-
-    def minimax_add_piece(self, pos):
-        if self.__game[pos[0]][pos[1]] == ' ':
-            self.__game[pos[0]][pos[1]] = 2
-            self.__new_piece_loc = pos
-            return True
-        else:
-            return False
-
-        
 
     def make_move(self, move):
         if move not in ["'W'", "'A'", "'S'", "'D'"]:
