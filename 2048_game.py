@@ -17,7 +17,6 @@ def human_next_move():
     while(move not in "UDLRudlr"):
         print('Bad move! Please try again.')
         move = input().strip().upper()
-
     return move
 
 def run_game():
