@@ -190,6 +190,20 @@ class GameLogic:
             self.__game[r[0]][r[1]] = 2
             self.__new_piece_loc = r
 
+    def get_empty_cells(self):
+        open = []
+        for i in range(len(self.__game)):
+            for j in range(len(self.__game)):
+                if self.__game[i][j] == ' ':
+                    open += [(i, j), ]
+        
+        return open
+    
+    def add_piece_deterministic(self, pos):
+        self.__game[pos[0]][pos[1]] = 2
+        self.__new_piece_loc = pos
+
+
     def make_move(self, move):
         if move not in ["'W'", "'A'", "'S'", "'D'"]:
             print("Error: Invalid Move!")
